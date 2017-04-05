@@ -45,8 +45,8 @@ public final class WG152ExtraFlags extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        
-
+        /* Registrando os eventos das Flags */
+        getServer().getPluginManager().registerEvents(new Listeners(), this);
     }
 
     @Override
