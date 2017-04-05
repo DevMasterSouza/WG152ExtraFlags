@@ -1,74 +1,82 @@
 package br.com.devmastersouza.wgextraflags;
 
 import com.sk89q.worldguard.protection.flags.*;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+/* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public final class WG152ExtraFlags extends JavaPlugin {
 
+    /* Novas Flags */
     public static StateFlag EF_FALL_DAMAGE = new StateFlag("EF-fall-damage", true);
     public static StateFlag EF_BLOCK_BREAK = new StateFlag("EF-block-break", true);
     public static StateFlag EF_BLOCK_PLACE = new StateFlag("EF-block-place", true);
     public static StateFlag EF_ITEM_PICKUP = new StateFlag("EF-item-pickup", true);
     public static StateFlag EF_CAN_FLY = new StateFlag("EF-can-fly", true);
-    public static LocationFlag EF_TELEPORT_ON_ENTRY = new LocationFlag("EF-teleport-on-entry");
+    /*public static LocationFlag EF_TELEPORT_ON_ENTRY = new LocationFlag("EF-teleport-on-entry");
     public static LocationFlag EF_TELEPORT_ON_EXIT = new LocationFlag("EF-teleport-on-exit");
     public static StringFlag EF_COMMAND_ON_ENTRY = new StringFlag("EF-command-on-entry");
-    public static StringFlag EF_COMMAND_ON_EXIT = new StringFlag("EF-command-on-exit");
+    public static StringFlag EF_COMMAND_ON_EXIT = new StringFlag("EF-command-on-exit");*/
+
 
     @Override
     public void onLoad() {
+        /* Verificando se tem WorldGuard */
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+            /* Adicionando as flags ao WorldGuard */
             addFlag(EF_FALL_DAMAGE);
             addFlag(EF_BLOCK_BREAK);
             addFlag(EF_BLOCK_PLACE);
             addFlag(EF_ITEM_PICKUP);
             addFlag(EF_CAN_FLY);
-            addFlag(EF_TELEPORT_ON_ENTRY);
+            /*addFlag(EF_TELEPORT_ON_ENTRY);
             addFlag(EF_TELEPORT_ON_EXIT);
             addFlag(EF_COMMAND_ON_ENTRY);
-            addFlag(EF_COMMAND_ON_EXIT);
+            addFlag(EF_COMMAND_ON_EXIT);*/
+        }else{
+            /* Desativar o plugin se nao tiver o WorldGuard */
+            getServer().getPluginManager().disablePlugin(this);
+            getServer().getConsoleSender().sendMessage(ChatColor.RED + "WG152ExtraFlags - WORLDGUARD FALTANDO");
         }
     }
 
     @Override
     public void onEnable() {
-
-        //fall-damge
-        //invicible
-        //block-break
-        //block-place
-        //item-pickup
-        //can-fly
-        //teleport-on-entry
-        //teleport-on-exit
-        //command-on-entry
-        //command-on-exit
+        
 
     }
 
     @Override
     public void onDisable() {}
 
+    /* Metodo para inserir as flags no WorldGuard */
     private void addFlag(Flag<?> flag) {
         try {
+            /* Field das Flags */
             Field f = DefaultFlag.class.getField("flagsList");
 
+            /* Criando uma nova array com mais um espaço */
             Flag<?>[] flags = new Flag<?>[DefaultFlag.flagsList.length + 1];
+            /* Copiando todos os Objetos da array do WorldGuard para nova Array */
             System.arraycopy(DefaultFlag.flagsList, 0, flags, 0, DefaultFlag.flagsList.length);
 
+            /* Inserindo a nova flag na array */
             flags[DefaultFlag.flagsList.length] = flag;
 
+            /* Verificando se a flag não é nula antes de colocar a nova array */
             if (flag == null) {
                 throw new NullPointerException("flag null");
             }
 
+            /* Modificando os modifiers da Class do WorldGuard*/
             Field modifier = Field.class.getDeclaredField("modifiers");
-
             modifier.setAccessible(true);
             modifier.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+
+            /* Inserindo na class do WorldGuard a nova array com nossa nova Flag */
             f.set(null, flags);
 
         } catch (Exception ex) {}
