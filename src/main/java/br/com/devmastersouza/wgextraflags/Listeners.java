@@ -1,5 +1,6 @@
 package br.com.devmastersouza.wgextraflags;
 
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import org.bukkit.entity.Player;
@@ -37,7 +38,9 @@ public class Listeners implements Listener{
         Player player = event.getPlayer();
         if(player.hasPermission("WG152ExtraFlags.bypass.block-break")) return;
         ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
+                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
+                        new Vector(event.getBlock().getX(),event.getBlock().getY(),event.getBlock().getZ())
+                );
         if(!set.allows(WG152ExtraFlags.EF_BLOCK_BREAK)) {
             event.setCancelled(true);
         }
@@ -49,7 +52,9 @@ public class Listeners implements Listener{
         Player player = event.getPlayer();
         if(player.hasPermission("WG152ExtraFlags.bypass.block-place")) return;
         ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
+                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
+                        new Vector(event.getBlock().getX(),event.getBlock().getY(),event.getBlock().getZ())
+                );
         if(!set.allows(WG152ExtraFlags.EF_BLOCK_PLACE)) {
             event.setCancelled(true);
         }
