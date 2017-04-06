@@ -54,4 +54,4 @@ Download
 Links
 -----
 * [Twitter](https://twitter.com/DevMasterSouza)
-* [Video](https://youtu.be/42xToLbLh8U
+* [Video](https://youtu.be/42xToLbLh8U)
