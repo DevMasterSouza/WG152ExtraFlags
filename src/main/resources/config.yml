@@ -1,0 +1,18 @@
+# WG152ExtraFlags
+# Criado por DevMasterSouza
+# Source https://github.com/DevMasterSouza/WG152ExtraFlags/
+# Qualquer duvida, me manda no twitter https://twitter.com/DevMasterSouza
+#
+# Permissoes:
+# WG152ExtraFlags.bypass.FLAG (sem o EF-)
+# WG152ExtraFlags.cmd.reload (reload na config)
+#
+# Mensagens com valor "null" nao aparecem a mensagem
+msgs:
+  nopermission: '&cVoce nao tem permissao para digitar este comando.'
+  flags:
+    can-fly: '&cSeu fly foi desativado.'
+    block-break: '&cVoce nao pode quebrar blocos aqui.'
+    block-place: '&cVoce nao pode botar blocos aqui.'
+    fall-damage: null
+    item-pickup: '&cVoce nao pode pegar itens aqui.'

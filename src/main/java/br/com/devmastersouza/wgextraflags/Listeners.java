@@ -3,6 +3,7 @@ package br.com.devmastersouza.wgextraflags;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,6 +17,12 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 /* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public class Listeners implements Listener{
 
+    private final WG152ExtraFlags plugin;
+
+    public Listeners(WG152ExtraFlags plugin) {
+        this.plugin = plugin;
+    }
+
     /* EF_FALL_DAMAGE */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void fallDamageFlag(EntityDamageEvent event) {
@@ -26,6 +33,9 @@ public class Listeners implements Listener{
                 ApplicableRegionSet set =
                         WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
                 if(!set.allows(WG152ExtraFlags.EF_FALL_DAMAGE)) {
+                    String msg = plugin.getConfig().getString("msgs.flags.fall-damage");
+                    if(msg != null && !msg.equalsIgnoreCase("null"))
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
                     event.setCancelled(true);
                 }
             }
@@ -42,6 +52,9 @@ public class Listeners implements Listener{
                         new Vector(event.getBlock().getX(),event.getBlock().getY(),event.getBlock().getZ())
                 );
         if(!set.allows(WG152ExtraFlags.EF_BLOCK_BREAK)) {
+            String msg = plugin.getConfig().getString("msgs.flags.block-break");
+            if(msg != null && !msg.equalsIgnoreCase("null"))
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             event.setCancelled(true);
         }
     }
@@ -56,6 +69,9 @@ public class Listeners implements Listener{
                         new Vector(event.getBlock().getX(),event.getBlock().getY(),event.getBlock().getZ())
                 );
         if(!set.allows(WG152ExtraFlags.EF_BLOCK_PLACE)) {
+            String msg = plugin.getConfig().getString("msgs.flags.block-place");
+            if(msg != null && !msg.equalsIgnoreCase("null"))
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             event.setCancelled(true);
         }
     }
@@ -68,6 +84,9 @@ public class Listeners implements Listener{
         ApplicableRegionSet set =
                 WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
         if(!set.allows(WG152ExtraFlags.EF_ITEM_PICKUP)) {
+            String msg = plugin.getConfig().getString("msgs.flags.item-pickup");
+            if(msg != null && !msg.equalsIgnoreCase("null"))
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             event.setCancelled(true);
         }
     }
@@ -80,6 +99,9 @@ public class Listeners implements Listener{
         if(player.getAllowFlight()) {
             if(player.hasPermission("WG152ExtraFlags.bypass.can-fly")) return;
             if(!set.allows(WG152ExtraFlags.EF_CAN_FLY)) {
+                String msg = plugin.getConfig().getString("msgs.flags.can-fly");
+                if(msg != null && !msg.equalsIgnoreCase("null"))
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
                 player.setFlying(false);
                 player.setAllowFlight(false);
             }

@@ -5,3 +5,7 @@ depend: [WorldGuard]
 authors: [DevMasterSouza]
 description: Adiciona algumas flags novas do WG na 1.5.2 entre outras
 website: https://github.com/DevMasterSouza/WG152ExtraFlags
+
+commands:
+  extraflags:
+    aliases: [ef]

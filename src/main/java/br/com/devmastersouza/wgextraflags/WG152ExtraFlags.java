@@ -46,7 +46,26 @@ public final class WG152ExtraFlags extends JavaPlugin {
     @Override
     public void onEnable() {
         /* Registrando os eventos das Flags */
-        getServer().getPluginManager().registerEvents(new Listeners(), this);
+        getServer().getPluginManager().registerEvents(new Listeners(this), this);
+        saveDefaultConfig();
+
+        getCommand("extraflags").setExecutor((sender, command, label, args) -> {
+            if(args.length > 0) {
+                if(args[0].equalsIgnoreCase("reload")) {
+                    if(sender.hasPermission("WG152ExtraFlags.cmd.reload")) {
+                        reloadConfig();
+                        sender.sendMessage(ChatColor.RED + "Config recarregada.");
+                    }else{
+                        sender.sendMessage(ChatColor
+                                .translateAlternateColorCodes('&', getConfig().getString("msgs.nopermission")));
+                    }
+                    return true;
+                }
+            }
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&6WG152ExtraFlags\n&6Criado por DevMasterSouza\n&6Comandos:\n&6/ef reload - recarregar a config"));
+            return true;
+        });
     }
 
     @Override
