@@ -27,6 +27,10 @@ Permissões
 
 Changelog
 ---------
+1.1
+* Mensagens
+* Config para configurar as mensanges
+
 1.0
 * Primeira versao
 
@@ -37,8 +41,12 @@ Changelog
 * EF-fall-damage
 * EF-item-pickup
 
+Download
+--------
+* [1.1](http://adf.ly/1m6ExX)
+* [1.0](http://adf.ly/1m5WJH)
+
 Links
 -----
 * [Twitter](https://twitter.com/DevMasterSouza)
-* [Video](https://youtu.be/42xToLbLh8U)
-* [Download](http://adf.ly/1m5WJH)
+* [Video](https://youtu.be/42xToLbLh8U
