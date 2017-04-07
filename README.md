@@ -28,7 +28,6 @@ Permissões
 * WG152ExtraFlags.bypass.block-place
 * WG152ExtraFlags.bypass.fall-damage
 * WG152ExtraFlags.bypass.pickup
-* WG152ExtraFlags.cmd.reload
 
 Changelog
 ---------
