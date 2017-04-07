@@ -1,8 +1,5 @@
 package br.com.devmastersouza.wgextraflags;
 
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,10 +27,8 @@ public class Listeners implements Listener{
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
                 if(player.hasPermission("WG152ExtraFlags.bypass.fall-damage")) return;
-                ApplicableRegionSet set =
-                        WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
-                                new Vector(player.getLocation().getX(),player.getLocation().getY(),player.getLocation().getZ()));
-                if(!set.allows(WG152ExtraFlags.EF_FALL_DAMAGE)) {
+
+                if(!plugin.allows(WG152ExtraFlags.EF_FALL_DAMAGE, player.getLocation())) {
                     String msg = plugin.getConfig().getString("msgs.flags.fall-damage");
                     if(msg != null && !msg.equalsIgnoreCase("null"))
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
@@ -48,11 +43,7 @@ public class Listeners implements Listener{
     public void blockBreakFlag(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if(player.hasPermission("WG152ExtraFlags.bypass.block-break")) return;
-        ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
-                        new Vector(event.getBlock().getX(),event.getBlock().getY(),event.getBlock().getZ())
-                );
-        if(!set.allows(WG152ExtraFlags.EF_BLOCK_BREAK)) {
+        if(!plugin.allows(WG152ExtraFlags.EF_BLOCK_BREAK, event.getBlock().getLocation())) {
             String msg = plugin.getConfig().getString("msgs.flags.block-break");
             if(msg != null && !msg.equalsIgnoreCase("null"))
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
@@ -65,11 +56,7 @@ public class Listeners implements Listener{
     public void blockPlaceFlag(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if(player.hasPermission("WG152ExtraFlags.bypass.block-place")) return;
-        ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
-                        new Vector(event.getBlock().getX(),event.getBlock().getY(),event.getBlock().getZ())
-                );
-        if(!set.allows(WG152ExtraFlags.EF_BLOCK_PLACE)) {
+        if(!plugin.allows(WG152ExtraFlags.EF_BLOCK_PLACE, event.getBlock().getLocation())) {
             String msg = plugin.getConfig().getString("msgs.flags.block-place");
             if(msg != null && !msg.equalsIgnoreCase("null"))
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
@@ -82,10 +69,7 @@ public class Listeners implements Listener{
     public void itemPickupFlag(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
         if(player.hasPermission("WG152ExtraFlags.bypass.item-pickup")) return;
-        ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
-                        new Vector(event.getItem().getLocation().getBlockX(),event.getItem().getLocation().getBlockY(),event.getItem().getLocation().getBlockZ()));
-        if(!set.allows(WG152ExtraFlags.EF_ITEM_PICKUP)) {
+        if(!plugin.allows(WG152ExtraFlags.EF_ITEM_PICKUP, event.getItem().getLocation())) {
             String msg = plugin.getConfig().getString("msgs.flags.item-pickup");
             if(msg != null && !msg.equalsIgnoreCase("null"))
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
@@ -96,12 +80,9 @@ public class Listeners implements Listener{
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
-                        new Vector(player.getLocation().getX(),player.getLocation().getY(),player.getLocation().getZ()));
         if(player.getAllowFlight()) {
             if(player.hasPermission("WG152ExtraFlags.bypass.can-fly")) return;
-            if(!set.allows(WG152ExtraFlags.EF_CAN_FLY)) {
+            if(!plugin.allows(WG152ExtraFlags.EF_CAN_FLY, player.getLocation())) {
                 String msg = plugin.getConfig().getString("msgs.flags.can-fly");
                 if(msg != null && !msg.equalsIgnoreCase("null"))
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));

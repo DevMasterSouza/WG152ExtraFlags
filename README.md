@@ -24,9 +24,14 @@ Permissões
 * WG152ExtraFlags.bypass.block-place
 * WG152ExtraFlags.bypass.fall-damage
 * WG152ExtraFlags.bypass.pickup
+* WG152ExtraFlags.cmd.reload
 
 Changelog
 ---------
+1.2
+* item-pickup bug fix
+* Agora funcionando na 1.5.2 ate 1.11
+
 1.1
 * Mensagens
 * Config para configurar as mensanges
@@ -43,6 +48,7 @@ Changelog
 
 Download
 --------
+* [1.2](http://adf.ly/1m7FBU)
 * [1.1](http://adf.ly/1m6ExX)
 * [1.0](http://adf.ly/1m5WJH)
 
