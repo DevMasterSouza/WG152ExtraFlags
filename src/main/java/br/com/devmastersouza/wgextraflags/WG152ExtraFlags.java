@@ -1,11 +1,10 @@
 package br.com.devmastersouza.wgextraflags;
 
-import com.sk89q.worldguard.protection.flags.*;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 /* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public final class WG152ExtraFlags extends JavaPlugin {
@@ -21,9 +20,12 @@ public final class WG152ExtraFlags extends JavaPlugin {
     public static StringFlag EF_COMMAND_ON_ENTRY = new StringFlag("EF-command-on-entry");
     public static StringFlag EF_COMMAND_ON_EXIT = new StringFlag("EF-command-on-exit");*/
 
+    private WorldGuardUtils utils;
+
 
     @Override
     public void onLoad() {
+        utils = new WorldGuardUtils(this);
         /* Verificando se tem WorldGuard */
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
             /* Adicionando as flags ao WorldGuard */
@@ -71,33 +73,7 @@ public final class WG152ExtraFlags extends JavaPlugin {
     @Override
     public void onDisable() {}
 
-    /* Metodo para inserir as flags no WorldGuard */
-    private void addFlag(Flag<?> flag) {
-        try {
-            /* Field das Flags */
-            Field f = DefaultFlag.class.getField("flagsList");
+    private void addFlag(Flag<?> flag) {utils.addFlag(flag);}
 
-            /* Criando uma nova array com mais um espaço */
-            Flag<?>[] flags = new Flag<?>[DefaultFlag.flagsList.length + 1];
-            /* Copiando todos os Objetos da array do WorldGuard para nova Array */
-            System.arraycopy(DefaultFlag.flagsList, 0, flags, 0, DefaultFlag.flagsList.length);
-
-            /* Inserindo a nova flag na array */
-            flags[DefaultFlag.flagsList.length] = flag;
-
-            /* Verificando se a flag não é nula antes de colocar a nova array */
-            if (flag == null) {
-                throw new NullPointerException("flag null");
-            }
-
-            /* Modificando os modifiers da Class do WorldGuard*/
-            Field modifier = Field.class.getDeclaredField("modifiers");
-            modifier.setAccessible(true);
-            modifier.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-
-            /* Inserindo na class do WorldGuard a nova array com nossa nova Flag */
-            f.set(null, flags);
-
-        } catch (Exception ex) {}
-    }
+    public boolean allows(StateFlag flag, Location location) {return utils.allows(flag, location);}
 }
