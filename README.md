@@ -17,6 +17,10 @@ Flags
 * EF-fall-damage
 * EF-item-pickup
 
+Comandos
+--------
+* /extraflags reload - WG152ExtraFlags.cmd.reload
+
 Permissões
 ----------
 * WG152ExtraFlags.bypass.can-fly
@@ -35,6 +39,7 @@ Changelog
 1.1
 * Mensagens
 * Config para configurar as mensanges
+* /extraflags reload - WG152ExtraFlags.cmd.reload 
 
 1.0
 * Primeira versao
@@ -55,4 +60,4 @@ Download
 Links
 -----
 * [Twitter](https://twitter.com/DevMasterSouza)
-* [Video](https://youtu.be/42xToLbLh8U
+* [Video](https://youtu.be/42xToLbLh8U)
