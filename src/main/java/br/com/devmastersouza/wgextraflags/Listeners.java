@@ -31,7 +31,8 @@ public class Listeners implements Listener{
                 Player player = (Player) event.getEntity();
                 if(player.hasPermission("WG152ExtraFlags.bypass.fall-damage")) return;
                 ApplicableRegionSet set =
-                        WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
+                        WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
+                                new Vector(player.getLocation().getX(),player.getLocation().getY(),player.getLocation().getZ()));
                 if(!set.allows(WG152ExtraFlags.EF_FALL_DAMAGE)) {
                     String msg = plugin.getConfig().getString("msgs.flags.fall-damage");
                     if(msg != null && !msg.equalsIgnoreCase("null"))
@@ -82,7 +83,8 @@ public class Listeners implements Listener{
         Player player = event.getPlayer();
         if(player.hasPermission("WG152ExtraFlags.bypass.item-pickup")) return;
         ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
+                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
+                        new Vector(event.getItem().getLocation().getBlockX(),event.getItem().getLocation().getBlockY(),event.getItem().getLocation().getBlockZ()));
         if(!set.allows(WG152ExtraFlags.EF_ITEM_PICKUP)) {
             String msg = plugin.getConfig().getString("msgs.flags.item-pickup");
             if(msg != null && !msg.equalsIgnoreCase("null"))
@@ -95,7 +97,8 @@ public class Listeners implements Listener{
     public void playerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         ApplicableRegionSet set =
-                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
+                WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
+                        new Vector(player.getLocation().getX(),player.getLocation().getY(),player.getLocation().getZ()));
         if(player.getAllowFlight()) {
             if(player.hasPermission("WG152ExtraFlags.bypass.can-fly")) return;
             if(!set.allows(WG152ExtraFlags.EF_CAN_FLY)) {
