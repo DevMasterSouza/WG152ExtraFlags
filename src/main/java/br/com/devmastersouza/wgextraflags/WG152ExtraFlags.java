@@ -1,7 +1,9 @@
 package br.com.devmastersouza.wgextraflags;
 
 import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.LocationFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.StringFlag;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,10 +17,10 @@ public final class WG152ExtraFlags extends JavaPlugin {
     public static StateFlag EF_BLOCK_PLACE = new StateFlag("EF-block-place", true);
     public static StateFlag EF_ITEM_PICKUP = new StateFlag("EF-item-pickup", true);
     public static StateFlag EF_CAN_FLY = new StateFlag("EF-can-fly", true);
-    /*public static LocationFlag EF_TELEPORT_ON_ENTRY = new LocationFlag("EF-teleport-on-entry");
+    public static LocationFlag EF_TELEPORT_ON_ENTRY = new LocationFlag("EF-teleport-on-entry");
     public static LocationFlag EF_TELEPORT_ON_EXIT = new LocationFlag("EF-teleport-on-exit");
     public static StringFlag EF_COMMAND_ON_ENTRY = new StringFlag("EF-command-on-entry");
-    public static StringFlag EF_COMMAND_ON_EXIT = new StringFlag("EF-command-on-exit");*/
+    public static StringFlag EF_COMMAND_ON_EXIT = new StringFlag("EF-command-on-exit");
 
     private WorldGuardUtils utils;
 
@@ -34,10 +36,10 @@ public final class WG152ExtraFlags extends JavaPlugin {
             addFlag(EF_BLOCK_PLACE);
             addFlag(EF_ITEM_PICKUP);
             addFlag(EF_CAN_FLY);
-            /*addFlag(EF_TELEPORT_ON_ENTRY);
+            addFlag(EF_TELEPORT_ON_ENTRY);
             addFlag(EF_TELEPORT_ON_EXIT);
             addFlag(EF_COMMAND_ON_ENTRY);
-            addFlag(EF_COMMAND_ON_EXIT);*/
+            addFlag(EF_COMMAND_ON_EXIT);
         }else{
             /* Desativar o plugin se nao tiver o WorldGuard */
             getServer().getPluginManager().disablePlugin(this);
@@ -76,4 +78,5 @@ public final class WG152ExtraFlags extends JavaPlugin {
     private void addFlag(Flag<?> flag) {utils.addFlag(flag);}
 
     public boolean allows(StateFlag flag, Location location) {return utils.allows(flag, location);}
+    public <T extends Flag<V>, V> V getFlag(T flag, Location location) {return utils.getFlag(flag,location);}
 }
