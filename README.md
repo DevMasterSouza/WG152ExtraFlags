@@ -23,10 +23,10 @@ Flags
 
 Como usar flags
 ---------------
-* /region flag <REGION> EF-teleport-on-entry here
+* /region flag REGION EF-teleport-on-entry here
   
   "here" bota o teleport para o local onde voce esta
-* /region flag <REGION> EF-teleport-on-exit here
+* /region flag REGION EF-teleport-on-exit here
   
   "here" bota o teleport para o local onde voce esta
 
