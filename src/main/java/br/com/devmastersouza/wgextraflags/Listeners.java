@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 /* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public class Listeners implements Listener{
@@ -81,7 +82,15 @@ public class Listeners implements Listener{
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerMoveEvent(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
+        move(event.getPlayer(), event.getFrom(), event.getTo());
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        event.setCancelled(move(event.getPlayer(), event.getFrom(), event.getTo()));
+    }
+
+    private boolean move(Player player, Location from, Location to) {
         if(player.getAllowFlight()) {
             if(!player.hasPermission("WG152ExtraFlags.bypass.can-fly")) {
                 if (!plugin.allows(WG152ExtraFlags.EF_CAN_FLY, player.getLocation())) {
@@ -94,38 +103,41 @@ public class Listeners implements Listener{
             }
         }
 
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
-                || event.getFrom().getBlockY() != event.getTo().getBlockY()
-                || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-            String from_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, event.getFrom());
-            String to_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, event.getTo());
+        if (from.getBlockX() != to.getBlockX()
+                || from.getBlockY() != to.getBlockY()
+                || from.getBlockZ() != to.getBlockZ()) {
+            String from_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, from);
+            String to_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, to);
             if(from_cmd_entry != to_cmd_entry) {
                 if(to_cmd_entry != null) {
                     Bukkit.getServer().dispatchCommand(player, to_cmd_entry);
                 }
             }
-            String from_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, event.getFrom());
-            String to_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, event.getTo());
+            String from_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, from);
+            String to_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, to);
             if(from_cmd_exit != to_cmd_exit) {
                 if(from_cmd_exit != null) {
                     Bukkit.getServer().dispatchCommand(player, from_cmd_exit);
                 }
             }
-            com.sk89q.worldedit.Location from_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, event.getFrom());
-            com.sk89q.worldedit.Location to_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, event.getTo());
+            com.sk89q.worldedit.Location from_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, from, player);
+            com.sk89q.worldedit.Location to_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, to, player);
             if(from_teleport_entry != to_teleport_entry) {
                 if(to_teleport_entry != null) {
                     player.teleport(getLocation(to_teleport_entry));
+                    return true;
                 }
             }
-            com.sk89q.worldedit.Location from_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, event.getFrom());
-            com.sk89q.worldedit.Location to_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, event.getTo());
+            com.sk89q.worldedit.Location from_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, from, player);
+            com.sk89q.worldedit.Location to_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, to, player);
             if(from_teleport_exit != to_teleport_exit) {
                 if(from_teleport_exit != null) {
                     player.teleport(getLocation(from_teleport_exit));
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     /*private boolean locationEquals(com.sk89q.worldedit.Location loc1, com.sk89q.worldedit.Location loc2) {
