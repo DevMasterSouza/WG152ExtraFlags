@@ -1,5 +1,6 @@
 package br.com.devmastersouza.wgextraflags;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -81,23 +82,34 @@ public class Listeners implements Listener{
     public void playerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if(player.getAllowFlight()) {
-            if(player.hasPermission("WG152ExtraFlags.bypass.can-fly")) return;
-            if(!plugin.allows(WG152ExtraFlags.EF_CAN_FLY, player.getLocation())) {
-                String msg = plugin.getConfig().getString("msgs.flags.can-fly");
-                if(msg != null && !msg.equalsIgnoreCase("null"))
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
-                player.setFlying(false);
-                player.setAllowFlight(false);
+            if(!player.hasPermission("WG152ExtraFlags.bypass.can-fly")) {
+                if (!plugin.allows(WG152ExtraFlags.EF_CAN_FLY, player.getLocation())) {
+                    String msg = plugin.getConfig().getString("msgs.flags.can-fly");
+                    if (msg != null && !msg.equalsIgnoreCase("null"))
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+                    player.setFlying(false);
+                    player.setAllowFlight(false);
+                }
             }
         }
 
-        /*if (event.getFrom().getBlockX() != event.getTo().getBlockX()
+        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
                 || event.getFrom().getBlockY() != event.getTo().getBlockY()
                 || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-            ApplicableRegionSet to =
-                    WGBukkit.getRegionManager(player.getWorld()).getApplicableRegions(
-                            new Vector(event.getTo().getBlockX(),event.getTo().getBlockY(),event.getTo().getBlockZ()));
-
-        }*/
+            String from_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, event.getFrom());
+            String to_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, event.getTo());
+            if(from_cmd_entry != to_cmd_entry) {
+                if(to_cmd_entry != null) {
+                    Bukkit.getServer().dispatchCommand(player, to_cmd_entry);
+                }
+            }
+            String from_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, event.getFrom());
+            String to_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, event.getTo());
+            if(from_cmd_exit != to_cmd_exit) {
+                if(from_cmd_exit != null) {
+                    Bukkit.getServer().dispatchCommand(player, from_cmd_exit);
+                }
+            }
+        }
     }
 }
