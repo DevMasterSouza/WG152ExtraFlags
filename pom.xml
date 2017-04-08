@@ -6,7 +6,7 @@
 
     <groupId>br.com.devmastersouza</groupId>
     <artifactId>WG152ExtraFlags</artifactId>
-    <version>1.2</version>
+    <version>1.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>WG152ExtraFlags</name>
