@@ -2,6 +2,7 @@ package br.com.devmastersouza.wgextraflags;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -110,6 +111,35 @@ public class Listeners implements Listener{
                     Bukkit.getServer().dispatchCommand(player, from_cmd_exit);
                 }
             }
+            com.sk89q.worldedit.Location from_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, event.getFrom());
+            com.sk89q.worldedit.Location to_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, event.getTo());
+            if(from_teleport_entry != to_teleport_entry) {
+                if(to_teleport_entry != null) {
+                    player.teleport(getLocation(to_teleport_entry));
+                }
+            }
+            com.sk89q.worldedit.Location from_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, event.getFrom());
+            com.sk89q.worldedit.Location to_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, event.getTo());
+            if(from_teleport_exit != to_teleport_exit) {
+                if(from_teleport_exit != null) {
+                    player.teleport(getLocation(from_teleport_exit));
+                }
+            }
         }
+    }
+
+    /*private boolean locationEquals(com.sk89q.worldedit.Location loc1, com.sk89q.worldedit.Location loc2) {
+        if(loc)
+    }*/
+
+    private Location getLocation(com.sk89q.worldedit.Location location) {
+        if(location == null) return null;
+        return Bukkit.getWorld(location.getWorld().getName()) != null ? new Location(Bukkit.getWorld(location.getWorld().getName())
+                , location.getPosition().getX()
+                , location.getPosition().getY()
+                , location.getPosition().getZ()
+                , location.getYaw()
+                , location.getPitch()) : null;
+
     }
 }
