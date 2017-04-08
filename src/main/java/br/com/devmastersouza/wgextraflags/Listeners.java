@@ -82,15 +82,16 @@ public class Listeners implements Listener{
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerMoveEvent(PlayerMoveEvent event) {
-        move(event.getPlayer(), event.getFrom(), event.getTo());
+        event.setTo(move(event.getPlayer(), event.getFrom(), event.getTo()));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        event.setCancelled(move(event.getPlayer(), event.getFrom(), event.getTo()));
+        if(event.getFrom().equals(event.getTo()))return;
+        event.setTo(move(event.getPlayer(), event.getFrom(), event.getTo()));
     }
 
-    private boolean move(Player player, Location from, Location to) {
+    private Location move(Player player, Location from, Location to) {
         if(player.getAllowFlight()) {
             if(!player.hasPermission("WG152ExtraFlags.bypass.can-fly")) {
                 if (!plugin.allows(WG152ExtraFlags.EF_CAN_FLY, player.getLocation())) {
@@ -124,20 +125,20 @@ public class Listeners implements Listener{
             com.sk89q.worldedit.Location to_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, to, player);
             if(from_teleport_entry != to_teleport_entry) {
                 if(to_teleport_entry != null) {
-                    player.teleport(getLocation(to_teleport_entry));
-                    return true;
+                    Location location = getLocation(to_teleport_entry);
+                    return location;
                 }
             }
             com.sk89q.worldedit.Location from_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, from, player);
             com.sk89q.worldedit.Location to_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, to, player);
             if(from_teleport_exit != to_teleport_exit) {
                 if(from_teleport_exit != null) {
-                    player.teleport(getLocation(from_teleport_exit));
-                    return true;
+                    Location location = getLocation(from_teleport_exit);
+                    return location;
                 }
             }
         }
-        return false;
+        return to;
     }
 
     /*private boolean locationEquals(com.sk89q.worldedit.Location loc1, com.sk89q.worldedit.Location loc2) {
