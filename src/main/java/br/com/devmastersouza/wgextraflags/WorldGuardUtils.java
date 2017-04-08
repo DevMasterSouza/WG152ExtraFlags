@@ -1,6 +1,7 @@
 package br.com.devmastersouza.wgextraflags;
 
 import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -9,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
@@ -36,6 +38,8 @@ public class WorldGuardUtils {
     private Class _StateFlagClass;
     private Method _allows;
     private Method _getFlag;
+    private Method _getFlagWithLocalPlayer;
+    private Method _wrapPlayer;
 
     public WorldGuardUtils(WG152ExtraFlags plugin) {
         this.plugin = plugin;
@@ -59,6 +63,8 @@ public class WorldGuardUtils {
                 _StateFlagClass = Class.forName("com.sk89q.worldguard.protection.flags.StateFlag");
                 _allows = _ApplicableRegionSetClass.getMethod("allows", _StateFlagClass);
                 _getFlag = _ApplicableRegionSetClass.getMethod("getFlag", Flag.class);
+                _getFlagWithLocalPlayer = _ApplicableRegionSetClass.getMethod("getFlag", Flag.class, LocalPlayer.class);
+                _wrapPlayer = _WorldGuardPluginClass.getMethod("wrapPlayer", Player.class);
 
             }catch (Exception e) {e.printStackTrace();}
         }else{
@@ -125,4 +131,22 @@ public class WorldGuardUtils {
             return (V) _getFlag.invoke(ob, flag);
         }catch (Exception e){e.printStackTrace();return null;}
     }
+    protected <T extends Flag<V>, V> V getFlag(T flag, Location location, Player player) {
+        try {
+            Object ob = getApplicableRegions(location);
+            Object localplayer = _wrapPlayer.invoke(wgpl, player);
+            return (V) _getFlagWithLocalPlayer.invoke(ob, flag, localplayer);
+        }catch (Exception e){e.printStackTrace();return null;}
+    }
+
+    /*protected ProtectedRegion getRegion(String name, World world) {
+        return WGBukkit.getRegionManager(world).getRegion(name);
+    }
+    protected void saveWorldGuard(World world) {
+        try {
+            WGBukkit.getRegionManager(world).save();
+        } catch (StorageException e) {
+            e.printStackTrace();
+        }
+    }*/
 }
