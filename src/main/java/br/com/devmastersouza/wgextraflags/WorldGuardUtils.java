@@ -33,8 +33,9 @@ public class WorldGuardUtils {
     private Method _179getApplicableRegions;
 
     private Class _ApplicableRegionSetClass;
-    private Method _allows;
     private Class _StateFlagClass;
+    private Method _allows;
+    private Method _getFlag;
 
     public WorldGuardUtils(WG152ExtraFlags plugin) {
         this.plugin = plugin;
@@ -57,6 +58,7 @@ public class WorldGuardUtils {
                 _ApplicableRegionSetClass = Class.forName("com.sk89q.worldguard.protection.ApplicableRegionSet");
                 _StateFlagClass = Class.forName("com.sk89q.worldguard.protection.flags.StateFlag");
                 _allows = _ApplicableRegionSetClass.getMethod("allows", _StateFlagClass);
+                _getFlag = _ApplicableRegionSetClass.getMethod("getFlag", Flag.class);
 
             }catch (Exception e) {e.printStackTrace();}
         }else{
@@ -115,5 +117,12 @@ public class WorldGuardUtils {
             Object ob = getApplicableRegions(location);
             return (boolean) _allows.invoke(ob, flag);
         }catch (Exception e){e.printStackTrace();return false;}
+    }
+
+    protected <T extends Flag<V>, V> V getFlag(T flag, Location location) {
+        try {
+            Object ob = getApplicableRegions(location);
+            return (V) _getFlag.invoke(ob, flag);
+        }catch (Exception e){e.printStackTrace();return null;}
     }
 }
