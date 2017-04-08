@@ -16,6 +16,19 @@ Flags
 * EF-block-place
 * EF-fall-damage
 * EF-item-pickup
+* EF-teleport-on-entry
+* EF-teleport-on-exit
+* EF-command-on-entry
+* EF-command-on-exit
+
+Como usar flags
+---------------
+* /region flag <REGION> EF-teleport-on-entry here
+  
+  "here" bota o teleport para o local onde voce esta
+* /region flag <REGION> EF-teleport-on-exit here
+  
+  "here" bota o teleport para o local onde voce esta
 
 Comandos
 --------
@@ -31,6 +44,13 @@ Permissões
 
 Changelog
 ---------
+1.3
+* Novas flags
+* EF-teleport-on-entry
+* EF-teleport-on-exit
+* EF-command-on-entry
+* EF-command-on-exit
+
 1.2
 * item-pickup bug fix
 * Agora funcionando na 1.5.2 ate 1.11
@@ -52,6 +72,7 @@ Changelog
 
 Download
 --------
+* [1.3](http://adf.ly/1m8DpI)
 * [1.2](http://adf.ly/1m7FBU)
 * [1.1](http://adf.ly/1m6ExX)
 * [1.0](http://adf.ly/1m5WJH)
@@ -59,4 +80,4 @@ Download
 Links
 -----
 * [Twitter](https://twitter.com/DevMasterSouza)
-* [Video](https://youtu.be/42xToLbLh8U)
+* [Video v1.0](https://youtu.be/42xToLbLh8U)

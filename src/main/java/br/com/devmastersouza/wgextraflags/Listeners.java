@@ -92,6 +92,7 @@ public class Listeners implements Listener{
     }
 
     private Location move(Player player, Location from, Location to) {
+        /* EF-can-fly */
         if(player.getAllowFlight()) {
             if(!player.hasPermission("WG152ExtraFlags.bypass.can-fly")) {
                 if (!plugin.allows(WG152ExtraFlags.EF_CAN_FLY, player.getLocation())) {
@@ -107,6 +108,8 @@ public class Listeners implements Listener{
         if (from.getBlockX() != to.getBlockX()
                 || from.getBlockY() != to.getBlockY()
                 || from.getBlockZ() != to.getBlockZ()) {
+
+            /* EF-command-on-entry */
             String from_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, from);
             String to_cmd_entry = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_ENTRY, to);
             if(from_cmd_entry != to_cmd_entry) {
@@ -114,6 +117,8 @@ public class Listeners implements Listener{
                     Bukkit.getServer().dispatchCommand(player, to_cmd_entry);
                 }
             }
+
+            /* EF-command-on-exit */
             String from_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, from);
             String to_cmd_exit = plugin.getFlag(WG152ExtraFlags.EF_COMMAND_ON_EXIT, to);
             if(from_cmd_exit != to_cmd_exit) {
@@ -121,6 +126,8 @@ public class Listeners implements Listener{
                     Bukkit.getServer().dispatchCommand(player, from_cmd_exit);
                 }
             }
+
+            /* EF-teleport-on-entry */
             com.sk89q.worldedit.Location from_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, from, player);
             com.sk89q.worldedit.Location to_teleport_entry = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_ENTRY, to, player);
             if(from_teleport_entry != to_teleport_entry) {
@@ -129,6 +136,8 @@ public class Listeners implements Listener{
                     return location;
                 }
             }
+
+            /* EF-teleport-on-exit */
             com.sk89q.worldedit.Location from_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, from, player);
             com.sk89q.worldedit.Location to_teleport_exit = plugin.getFlag(WG152ExtraFlags.EF_TELEPORT_ON_EXIT, to, player);
             if(from_teleport_exit != to_teleport_exit) {
