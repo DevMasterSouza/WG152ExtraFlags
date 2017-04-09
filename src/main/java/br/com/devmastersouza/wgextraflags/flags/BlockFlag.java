@@ -26,6 +26,33 @@ public class BlockFlag extends Flag<BlockData> {
 
     @Override
     public BlockData parseInput(WorldGuardPlugin worldGuardPlugin, CommandSender commandSender, String s) throws InvalidFlagFormat {
+        return toBlockData(s);
+    }
+
+    @Override
+    public BlockData unmarshal(@Nullable Object o) {
+        if (o instanceof BlockData) {
+            return (BlockData) o;
+        }else if(o instanceof String){
+            return toBlockData((String)o);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public Object marshal(BlockData blockData) {
+        return blockData.toString();
+    }
+
+    private boolean canParseInt(String str) {
+        try{
+            Integer.parseInt(str);
+            return true;
+        }catch (NumberFormatException ex) {return false;}
+    }
+
+    public BlockData toBlockData(String s) {
         s = s.trim().replaceAll(" ", "");
         if(s.contains(":")) {
             String[] arrays = s.split(":");
@@ -63,26 +90,5 @@ public class BlockFlag extends Flag<BlockData> {
             }
 
         }
-    }
-
-    @Override
-    public BlockData unmarshal(@Nullable Object o) {
-        if(o instanceof BlockData) {
-            return (BlockData) o;
-        }else{
-            return null;
-        }
-    }
-
-    @Override
-    public Object marshal(BlockData blockData) {
-        return blockData;
-    }
-
-    private boolean canParseInt(String str) {
-        try{
-            Integer.parseInt(str);
-            return true;
-        }catch (NumberFormatException ex) {return false;}
     }
 }

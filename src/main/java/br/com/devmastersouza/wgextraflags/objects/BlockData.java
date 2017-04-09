@@ -35,4 +35,9 @@ public class BlockData {
     public void setData(byte data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return data > 0 ? id + ":" + data : String.valueOf(id);
+    }
 }
