@@ -1,5 +1,7 @@
 package br.com.devmastersouza.wgextraflags;
 
+import br.com.devmastersouza.wgextraflags.flags.BlockFlag;
+import br.com.devmastersouza.wgextraflags.objects.BlockData;
 import com.sk89q.worldguard.protection.flags.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public final class WG152ExtraFlags extends JavaPlugin {
 
-    /* Novas Flags */
+    /* Novas flags */
     public static StateFlag EF_FALL_DAMAGE = new StateFlag("EF-fall-damage", true);
     public static StateFlag EF_BLOCK_BREAK = new StateFlag("EF-block-break", true);
     public static StateFlag EF_BLOCK_PLACE = new StateFlag("EF-block-place", true);
@@ -19,9 +21,12 @@ public final class WG152ExtraFlags extends JavaPlugin {
     public static LocationFlag EF_TELEPORT_ON_EXIT = new LocationFlag("EF-teleport-on-exit", RegionGroup.NON_MEMBERS);
     public static StringFlag EF_COMMAND_ON_ENTRY = new StringFlag("EF-command-on-entry");
     public static StringFlag EF_COMMAND_ON_EXIT = new StringFlag("EF-command-on-exit");
+    public static SetFlag<BlockData> EF_BLOCKED_BLOCKS_BREAK = new SetFlag<BlockData>("EF-blocked-blocks-break", new BlockFlag(null));
+    public static SetFlag<BlockData> EF_ALLOWED_BLOCKS_BREAK = new SetFlag<BlockData>("EF-allowed-blocks-break", new BlockFlag(null));
+    public static SetFlag<BlockData> EF_BLOCKED_BLOCKS_PLACE = new SetFlag<BlockData>("EF-blocked-blocks-place", new BlockFlag(null));
+    public static SetFlag<BlockData> EF_ALLOWED_BLOCKS_PLACE = new SetFlag<BlockData>("EF-allowed-blocks-place", new BlockFlag(null));
 
     private WorldGuardUtils utils;
-
 
     @Override
     public void onLoad() {
@@ -38,6 +43,10 @@ public final class WG152ExtraFlags extends JavaPlugin {
             addFlag(EF_TELEPORT_ON_EXIT);
             addFlag(EF_COMMAND_ON_ENTRY);
             addFlag(EF_COMMAND_ON_EXIT);
+            addFlag(EF_BLOCKED_BLOCKS_BREAK);
+            addFlag(EF_BLOCKED_BLOCKS_PLACE);
+            addFlag(EF_ALLOWED_BLOCKS_BREAK);
+            addFlag(EF_ALLOWED_BLOCKS_PLACE);
         }else{
             /* Desativar o plugin se nao tiver o WorldGuard */
             getServer().getPluginManager().disablePlugin(this);
@@ -47,7 +56,7 @@ public final class WG152ExtraFlags extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        /* Registrando os eventos das Flags */
+        /* Registrando os eventos das flags */
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
         saveDefaultConfig();
 
@@ -81,3 +90,4 @@ public final class WG152ExtraFlags extends JavaPlugin {
     /*public ProtectedRegion getRegion(String name, World world) {return utils.getRegion(name,world);}
     public void saveWorldGuard(World world) {utils.saveWorldGuard(world);}*/
 }
+

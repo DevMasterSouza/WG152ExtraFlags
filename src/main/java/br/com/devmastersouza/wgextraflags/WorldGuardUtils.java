@@ -76,7 +76,7 @@ public class WorldGuardUtils {
     /* Metodo para inserir as flags no WorldGuard */
     protected void addFlag(Flag<?> flag) {
         try {
-            /* Field das Flags */
+            /* Field das flags */
             Field f = DefaultFlag.class.getField("flagsList");
 
             /* Criando uma nova array com mais um espaço */
