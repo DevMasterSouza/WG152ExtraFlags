@@ -1,10 +1,10 @@
 package br.com.devmastersouza.wgextraflags;
 
-import br.com.devmastersouza.wgextraflags.objects.BlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,12 +12,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-
-import java.util.Set;
 
 /* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public class Listeners implements Listener{
@@ -74,10 +72,11 @@ public class Listeners implements Listener{
 
     /* EF_BLOCK_PLACE (REMOVE BUCKET)*/
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        if(event.getItem() != null && (event.getItem().getType() == Material.LAVA_BUCKET || event.getItem().getType() == Material.WATER_BUCKET)) {
-            if (!plugin.allows(WG152ExtraFlags.EF_BLOCK_PLACE, event.getClickedBlock().getLocation())) {
+        Location placeLOC = getFaceLocation(event.getBlockClicked().getLocation(), event.getBlockFace());
+        if(event.getBucket() != null && (event.getBucket() == Material.LAVA_BUCKET || event.getBucket() == Material.WATER_BUCKET)) {
+            if (!plugin.allows(WG152ExtraFlags.EF_BLOCK_PLACE, placeLOC)) {
                 if (player.hasPermission("WG152ExtraFlags.bypass.block-place")) return;
                 String msg = plugin.getConfig().getString("msgs.flags.block-place");
                 if (msg != null && !msg.equalsIgnoreCase("null"))
@@ -183,5 +182,23 @@ public class Listeners implements Listener{
                 , location.getYaw()
                 , location.getPitch()) : null;
 
+    }
+
+    private Location getFaceLocation(Location location, BlockFace blockface) {
+        if(blockface == BlockFace.DOWN) {
+            return location.clone().add(0,-1,0);
+        }else if(blockface == BlockFace.UP) {
+            return location.clone().add(0,1,0);
+        }else if(blockface == BlockFace.EAST) {
+            return location.clone().add(1,0,0);
+        }else if(blockface == BlockFace.WEST) {
+            return location.clone().add(-1,0,0);
+        }else if(blockface == BlockFace.SOUTH) {
+            return location.clone().add(0,0,1);
+        }else if(blockface == BlockFace.NORTH) {
+            return location.clone().add(0,0,-1);
+        }else{
+            return location;
+        }
     }
 }
