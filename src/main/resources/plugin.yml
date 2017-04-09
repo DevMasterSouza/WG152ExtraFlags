@@ -9,3 +9,25 @@ website: https://github.com/DevMasterSouza/WG152ExtraFlags
 commands:
   extraflags:
     aliases: [ef]
+
+permissions:
+  WG152ExtraFlags.*:
+    default: op
+    description: Da todos os comandos do plugin
+    children:
+      WG152ExtraFlags.bypass.*: true
+      WG152ExtraFlags.cmd.*: true
+  WG152ExtraFlags.bypass.*:
+    default: op
+    description: Da todos os bypass das flags
+    children:
+      WG152ExtraFlags.bypass.block-place: true
+      WG152ExtraFlags.bypass.block-break: true
+      WG152ExtraFlags.bypass.can-fly: true
+      WG152ExtraFlags.bypass.fall-damage: true
+      WG152ExtraFlags.bypass.item-pickup: true
+  WG152ExtraFlags.cmd.*:
+    default: op
+    description: Da permissao para todos os comandos do plugin
+    children:
+      WG152ExtraFlags.cmd.reload: true
