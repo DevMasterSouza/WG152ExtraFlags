@@ -1,8 +1,10 @@
 package br.com.devmastersouza.wgextraflags;
 
+import br.com.devmastersouza.wgextraflags.objects.BlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,9 +12,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.util.Set;
 
 /* ESTE PLUGIN PRECISA DE JAVA 1.8 */
 public class Listeners implements Listener{
@@ -45,8 +50,8 @@ public class Listeners implements Listener{
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void blockBreakFlag(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if(player.hasPermission("WG152ExtraFlags.bypass.block-break")) return;
         if(!plugin.allows(WG152ExtraFlags.EF_BLOCK_BREAK, event.getBlock().getLocation())) {
+            if(player.hasPermission("WG152ExtraFlags.bypass.block-break")) return;
             String msg = plugin.getConfig().getString("msgs.flags.block-break");
             if(msg != null && !msg.equalsIgnoreCase("null"))
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
@@ -58,12 +63,27 @@ public class Listeners implements Listener{
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void blockPlaceFlag(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(player.hasPermission("WG152ExtraFlags.bypass.block-place")) return;
         if(!plugin.allows(WG152ExtraFlags.EF_BLOCK_PLACE, event.getBlock().getLocation())) {
+            if(player.hasPermission("WG152ExtraFlags.bypass.block-place")) return;
             String msg = plugin.getConfig().getString("msgs.flags.block-place");
             if(msg != null && !msg.equalsIgnoreCase("null"))
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             event.setCancelled(true);
+        }
+    }
+
+    /* EF_BLOCK_PLACE (REMOVE BUCKET)*/
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if(event.getItem() != null && (event.getItem().getType() == Material.LAVA_BUCKET || event.getItem().getType() == Material.WATER_BUCKET)) {
+            if (!plugin.allows(WG152ExtraFlags.EF_BLOCK_PLACE, event.getClickedBlock().getLocation())) {
+                if (player.hasPermission("WG152ExtraFlags.bypass.block-place")) return;
+                String msg = plugin.getConfig().getString("msgs.flags.block-place");
+                if (msg != null && !msg.equalsIgnoreCase("null"))
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+                event.setCancelled(true);
+            }
         }
     }
 
